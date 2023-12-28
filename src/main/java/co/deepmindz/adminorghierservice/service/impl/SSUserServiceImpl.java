@@ -9,14 +9,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
+import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
 import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.repository.RolesRepository;
@@ -27,7 +28,6 @@ import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.utils.SSUserUtil;
 import co.deepmindz.adminorghierservice.utils.Templates;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
-import jakarta.ws.rs.core.Response;
 
 @Service
 public class SSUserServiceImpl implements SSUserService {
@@ -40,6 +40,9 @@ public class SSUserServiceImpl implements SSUserService {
 
 	@Autowired
 	SSUserRepository ssUserRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@Autowired
 	RolesRepository rolesRepository;
@@ -69,8 +72,8 @@ public class SSUserServiceImpl implements SSUserService {
 		SSUser user = ssUserUtil.mapRequestDtoToEntity(ssUserDto, loginmode);
 		SSUser createdUser = ssUserRepository.save(user);
 
-		return new SSUserResponseDto(createdUser.getUser_id(), user.getName(), createdUser.getRole_id(),
-				createdUser.getUsername(), createdUser.getLinkedParentZones(), createdUser.getLinkedSupervisors(),
+		return new SSUserResponseDto(createdUser.getUser_id(), createdUser.getRole_id(), createdUser.getUsername(),
+				createdUser.getPhoneNumber(), createdUser.getLinkedParentZones(), createdUser.getLinkedSupervisors(),
 				createdUser.getCreated_at());
 	}
 
@@ -123,7 +126,7 @@ public class SSUserServiceImpl implements SSUserService {
 			List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
 			Map<String, String> idWithSSUserNameMap = new HashMap<>();
 			for (SSUser user2 : supervisors)
-				idWithSSUserNameMap.put(user2.getUser_id(), user2.getName());
+				idWithSSUserNameMap.put(user2.getUser_id(), user2.getUsername());
 			responseList.add(ssUserUtil.mapEntityToResponseDtoForAllSSUser(user, idWithSSUserNameMap));
 		}
 		return responseList;
@@ -144,7 +147,7 @@ public class SSUserServiceImpl implements SSUserService {
 
 	@Override
 	public List<MemberResponseDto> getTeamMemberByZoneId(String zoneId) {
-		List<SSUser> teamMemberList = ssUserRepository.getTeamMemberByZoneId(zoneId );
+		List<SSUser> teamMemberList = ssUserRepository.getTeamMemberByZoneId(zoneId);
 		List<MemberResponseDto> response = new ArrayList<>();
 		if (teamMemberList.isEmpty() || teamMemberList == null) {
 			return response;
@@ -157,26 +160,45 @@ public class SSUserServiceImpl implements SSUserService {
 	@Override
 	public ResponseEntity<Object> updateUserByIds(String[] memberIds) {
 		List<SSUser> findByIds = ssUserRepository.findByIds(memberIds);
-		if (findByIds.isEmpty() || findByIds==null) {
-			return CustomHttpResponse.responseBuilder("Member details not found ", HttpStatus.NOT_FOUND, findByIds );
+		if (findByIds.isEmpty() || findByIds == null) {
+			return CustomHttpResponse.responseBuilder("Member details not found ", HttpStatus.NOT_FOUND, findByIds);
 		}
 		for (SSUser ssuser : findByIds) {
 			String status = ssuser.getStatus();
 			if (status.equals(Templates.USERSTATUS.OCCUPIED.name())) {
-				return CustomHttpResponse.responseBuilder("Member already occupied , please choose active member..!!", HttpStatus.IM_USED, "Member occupied..!!");
+				return CustomHttpResponse.responseBuilder("Member already occupied , please choose active member..!!",
+						HttpStatus.IM_USED, "Member occupied..!!");
 			}
-			 ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
-			 ssUserRepository.save(ssuser);
-	
+			ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
+			ssUserRepository.save(ssuser);
+
 		}
 		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds);
 	}
 
 	@Override
 	public List<SSResponseDtoForRestCall> allSSUserByIds(List<String> ssuserids) {
-
-		  List<SSUser> findAllById = ssUserRepository.findAllById(ssuserids);
-		    return ssUserUtil.mapListOfSSUserToListOfSSResponse(findAllById);
-
+		List<SSUser> findAllById = ssUserRepository.findAllById(ssuserids);
+		return ssUserUtil.mapListOfSSUserToListOfSSResponse(findAllById);
 	}
+
+	@Override
+	public String updateUsers(String username, SSUserUpdateRequestDto updateRequest) {
+		SSUser user = ssUserRepository.findByUsername(username);
+		String message = "";
+		if (user == null)
+			return null;
+		if (updateRequest.getPhoneNumber() != null && !updateRequest.getPhoneNumber().isEmpty()) {
+			user.setPhoneNumber(updateRequest.getPhoneNumber());
+			message = "Phone updated successfully";
+		} else {
+			user.setPassword(passwordEncoder.encode(updateRequest.getPassword()));
+			message = "Password reset successfully";
+		}
+		SSUser savedUser = ssUserRepository.save(user);
+		if (savedUser == null)
+			message = "Some error occured";
+		return message;
+	}
+
 }
