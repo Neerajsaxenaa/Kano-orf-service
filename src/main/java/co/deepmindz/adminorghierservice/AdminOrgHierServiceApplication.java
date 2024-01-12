@@ -29,8 +29,5 @@ public class AdminOrgHierServiceApplication extends SpringBootServletInitializer
         return new BCryptPasswordEncoder();
     }
     
-    @Bean
-    OkHttpClient okHttpClient () {
-    	return new OkHttpClient();
-    }
+   
 }

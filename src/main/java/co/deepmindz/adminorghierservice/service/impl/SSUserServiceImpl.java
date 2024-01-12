@@ -51,9 +51,6 @@ public class SSUserServiceImpl implements SSUserService {
 	RolesRepository rolesRepository;
 
 	@Autowired
-	OkHttpClient okHttpClient;
-
-	@Autowired
 	SSUserUtil ssUserUtil;
 
 	public Integer getZonesCountUsingLinkedZones(String parentZoneID) {
