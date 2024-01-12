@@ -1,10 +1,10 @@
 package co.deepmindz.adminorghierservice.service;
 
+import java.util.List;
+
 import co.deepmindz.adminorghierservice.dto.ParentZoneDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
-
-import java.util.List;
 
 public interface ZoneListService {
     List<ZoneListFiltrationResponseDTO> getFiltrationZoneList(String zoneListFiltrationDTO);

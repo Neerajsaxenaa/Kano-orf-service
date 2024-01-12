@@ -2,15 +2,15 @@ package co.deepmindz.adminorghierservice.service;
 
 import java.util.List;
 
-import co.deepmindz.adminorghierservice.dto.CreateZoneListDTO;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import co.deepmindz.adminorghierservice.dto.CreateZoneListDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_with_parentZone_response;
+import co.deepmindz.adminorghierservice.models.Zones_list;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.ParentZoneIds;
 
 @Service
 public interface Zones_list_service {
@@ -29,8 +29,9 @@ public interface Zones_list_service {
 
     List<Zones_list_with_parentZone_response> getAllZonesByRelationshipId(String linked_zone);
 
-
-    //	List<Zones_list_with_parentZone_response> getAllZoneListByRelationshipId(String linked_zone);
     JSONObject getAllZoneListByRelationshipId(String linked_zone, String getParent_zone_list_id);
+
+	List<Zones_list> getCordinatorByParentZone(ParentZoneIds parentZoneIds);
+
 
 }

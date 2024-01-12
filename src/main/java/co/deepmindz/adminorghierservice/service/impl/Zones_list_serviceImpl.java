@@ -19,6 +19,7 @@ import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.repository.ZoneRepo;
 import co.deepmindz.adminorghierservice.repository.Zones_list_Repo;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.ParentZoneIds;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
 
 @Service
@@ -177,7 +178,6 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 		JSONObject response = new JSONObject();
 		response.put("zone", zoneArray);
 		response.put("linked_zone_list", linkedZoneArray);
-
 		return response;
 	}
 
@@ -194,5 +194,11 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 		}
 		return linkedZoneArray;
 	}
+	
+	@Override
+	public List<Zones_list> getCordinatorByParentZone(ParentZoneIds parentZoneIds) {
+		return zones_list_Repo.getCordinatorByParentZone(parentZoneIds.getParentZoneIds());
+	}
+
 
 }

@@ -1,14 +1,11 @@
 package co.deepmindz.adminorghierservice.controllers;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +29,6 @@ import co.deepmindz.adminorghierservice.dto.RolesRequestDto;
 import co.deepmindz.adminorghierservice.dto.RolesResponseDto;
 import co.deepmindz.adminorghierservice.dto.ZonesResponseDto;
 import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
-import co.deepmindz.adminorghierservice.models.Roles;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.ZoneService;

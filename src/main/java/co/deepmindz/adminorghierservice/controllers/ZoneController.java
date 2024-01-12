@@ -1,8 +1,6 @@
 package co.deepmindz.adminorghierservice.controllers;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +46,7 @@ public class ZoneController {
 	public ResponseEntity<Object> zoneById(@PathVariable String zoneId) {
 		logger.info("ZoneController.class:zoneById():zoneId", zoneId);
 		ZonesResponseDto responseDto = zoneService.zoneById(zoneId);
-		if (zoneService.zoneById(zoneId) != null) {
+		if (responseDto!= null) {
 			return CustomHttpResponse.responseBuilder("Zones with zoneId : " + zoneId, HttpStatus.OK, responseDto);
 		}
 		return CustomHttpResponse.responseBuilder("Zones not found with zoneId  : " + zoneId, HttpStatus.OK,

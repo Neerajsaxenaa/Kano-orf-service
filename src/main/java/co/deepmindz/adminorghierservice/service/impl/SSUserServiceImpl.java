@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
@@ -28,6 +30,7 @@ import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.utils.SSUserUtil;
 import co.deepmindz.adminorghierservice.utils.Templates;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
+import jakarta.validation.Valid;
 
 @Service
 public class SSUserServiceImpl implements SSUserService {
@@ -46,6 +49,9 @@ public class SSUserServiceImpl implements SSUserService {
 
 	@Autowired
 	RolesRepository rolesRepository;
+
+	@Autowired
+	OkHttpClient okHttpClient;
 
 	@Autowired
 	SSUserUtil ssUserUtil;
@@ -199,6 +205,14 @@ public class SSUserServiceImpl implements SSUserService {
 		if (savedUser == null)
 			message = "Some error occured";
 		return message;
+	}
+
+	@Override
+	public SSUser getSSUserById(@Valid String userid) throws Exception {
+		SSUser ssusers = ssUserRepository.findById(userid).get();
+		if (ssusers == null)
+			throw new Exception("User not found..!!");
+		return ssusers;
 	}
 
 }

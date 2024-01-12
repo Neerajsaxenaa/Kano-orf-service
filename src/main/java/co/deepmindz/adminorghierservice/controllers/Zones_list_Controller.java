@@ -1,5 +1,7 @@
 package co.deepmindz.adminorghierservice.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +25,11 @@ import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
+import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.ParentZoneIds;
 import jakarta.validation.Valid;
 
 @RestController
@@ -159,5 +163,18 @@ public class Zones_list_Controller {
 		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList(zoneIds);
 		return zones_list_ResponseDtos;
 
+	}
+	
+	@PostMapping("/getCordinator-by-parentZone")
+	public List<Map<String, String>> getCordinatorByParentZone(@RequestBody ParentZoneIds parentZoneIds) {
+		List<Zones_list> allCordinators = zones_list_service.getCordinatorByParentZone(parentZoneIds);
+		List<Map<String, String>> data = new ArrayList<>();
+		for (Zones_list zones_list : allCordinators) {
+			Map<String, String> usersWithLinkedZones = new HashMap<>();
+			usersWithLinkedZones.put("parentZone", zones_list.getBelongs_to_zone());
+			usersWithLinkedZones.put("cordinator", zones_list.getCordinator());
+			data.add(usersWithLinkedZones);
+		}
+		return data;
 	}
 }

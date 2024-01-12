@@ -9,11 +9,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
+import com.squareup.okhttp.OkHttpClient;
+
 @SpringBootApplication
 public class AdminOrgHierServiceApplication extends SpringBootServletInitializer{
 
 	@Bean
-	@LoadBalanced
+//	@LoadBalanced
 	RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
@@ -25,5 +27,10 @@ public class AdminOrgHierServiceApplication extends SpringBootServletInitializer
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    OkHttpClient okHttpClient () {
+    	return new OkHttpClient();
     }
 }

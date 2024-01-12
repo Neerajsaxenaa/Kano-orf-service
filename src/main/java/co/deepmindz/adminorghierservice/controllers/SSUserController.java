@@ -33,6 +33,7 @@ import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
+import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.SSUserService;
@@ -289,4 +290,11 @@ public class SSUserController {
 			throw new ResourceNotFoundException("SSUSER", username, username);
 		return CustomHttpResponse.responseBuilder("SSUser has been updated", HttpStatus.OK, response);
 	}
+
+	@GetMapping("/get-user-by-zone-id/{userid}")
+	public ResponseEntity<Object> getSSUserById(@Valid @PathVariable String userid) throws Exception {
+		SSUser supervisors = ssUserService.getSSUserById(userid);
+		return CustomHttpResponse.responseBuilder("Supervisors ", HttpStatus.OK, supervisors);
+	}
+
 }

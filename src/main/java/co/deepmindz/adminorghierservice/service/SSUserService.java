@@ -11,7 +11,9 @@ import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
+import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
+import jakarta.validation.Valid;
 
 @Service
 public interface SSUserService {
@@ -39,5 +41,7 @@ public interface SSUserService {
 	List<SSResponseDtoForRestCall> allSSUserByIds(List<String> list);
 
 	public String updateUsers(String user_id, SSUserUpdateRequestDto updateRequest);
+
+	SSUser getSSUserById(@Valid String userid) throws Exception;
 
 }
