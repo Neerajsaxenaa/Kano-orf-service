@@ -23,7 +23,9 @@ public class SSUserRequestDto {
 	@NotNull
 	private String role;
 
-	@NotEmpty
+	private String name;
+	
+	
 	@NotNull
 	private String phoneNumber; 
 

@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
 
+@Repository
 public interface SSUserRepository extends JpaRepository<SSUser, String> {
 
 	public SSUser findByUsername(@Param("username") String username);

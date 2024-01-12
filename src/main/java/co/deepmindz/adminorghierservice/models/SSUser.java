@@ -30,8 +30,6 @@ public class SSUser {
 //	@NotNull
 	private String status;
 	
-	@NotEmpty
-	@NotNull
 	private String name;
 
 	@NotEmpty

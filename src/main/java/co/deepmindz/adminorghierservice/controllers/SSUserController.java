@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +30,9 @@ import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
+import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
-import co.deepmindz.adminorghierservice.models.SSUser;
+import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.SSUserService;
@@ -64,8 +66,6 @@ public class SSUserController {
 
 	private static ParameterizedTypeReference<Map<String, String>> responseType = new ParameterizedTypeReference<>() {
 	};
-
-	private static final String[] services = { "http://admin-main-service" };
 
 //	@GetMapping("/all-roles")
 //	public ResponseEntity<Object> getAllRoles() {
@@ -116,18 +116,18 @@ public class SSUserController {
 			throws OperationNotSupportedException {
 		logger.info("SSUser.class : createSSUser() : " + createSSUserData);
 		RequestEntity<Void> request = RequestEntity
-				.get(services[0] + "/admin-main/external-resource/check-user-base-resource")
+				.get(Templates.ALLSERVICES.admin_main.toString()
+						+ "/admin-main/external-resource/check-user-base-resource")
 				.accept(MediaType.APPLICATION_JSON).build();
 		if (restTemplate.exchange(request, responseType).getBody().get("data") == "true") {
 			throw new OperationNotSupportedException(
 					"HRM based configuration found, can't create new user." + " please contact your HRM Team");
 		}
-
-//		if (loginmode == null) {
-		request = RequestEntity.get(services[0] + "/admin-main/login-mode/current-loginMode-status")
+		request = RequestEntity
+				.get(Templates.ALLSERVICES.admin_main.toString() + "/admin-main/login-mode/current-loginMode-status")
 				.accept(MediaType.APPLICATION_JSON).build();
 		loginmode = restTemplate.exchange(request, responseType).getBody();
-//		}
+
 		if (loginmode.get("data").equals(Templates.LOGINMODES.Two_FA.name())) {
 			if (createSSUserData.getPhoneNumber().isEmpty() || createSSUserData.getPhoneNumber().isBlank())
 				throw new OperationNotSupportedException("Please provide valid phone number");
@@ -161,7 +161,7 @@ public class SSUserController {
 	 * creation They are not subordinates, they are members from same zone.
 	 */
 	@GetMapping("/members-by-relationship-id")
-	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId ) {
+	public ResponseEntity<Object> getTeamMemberByZoneId(@RequestParam String zoneId) {
 		List<MemberResponseDto> teamMemberByZoneId = ssUserService.getTeamMemberByZoneId(zoneId);
 		if (teamMemberByZoneId == null) {
 			return CustomHttpResponse.responseBuilder("No Team member found in this zone..!!", HttpStatus.OK,
@@ -270,7 +270,23 @@ public class SSUserController {
 			return CustomHttpResponse.responseBuilder("getAllFreezeConfigurationApi  is not working..!!",
 					HttpStatus.NOT_FOUND, null);
 		}
-
 	}
 
+	@PostMapping("/update_ssuser_phone/{username}")
+	public ResponseEntity<Object> updateSSUserPhone(@PathVariable String username,
+			@Valid @RequestBody SSUserUpdateRequestDto updateRequest) {
+		String response = ssUserService.updateUsers(username, updateRequest);
+		if (response == null)
+			throw new ResourceNotFoundException("SSUSER", username, username);
+		return CustomHttpResponse.responseBuilder("SSUser has been updated", HttpStatus.OK, response);
+	}
+
+	@PostMapping("/reset_ssuser_password/{username}")
+	public ResponseEntity<Object> resetSSUserPassword(@PathVariable String username,
+			@Valid @RequestBody SSUserUpdateRequestDto updateRequest) {
+		String response = ssUserService.updateUsers(username, updateRequest);
+		if (response == null)
+			throw new ResourceNotFoundException("SSUSER", username, username);
+		return CustomHttpResponse.responseBuilder("SSUser has been updated", HttpStatus.OK, response);
+	}
 }

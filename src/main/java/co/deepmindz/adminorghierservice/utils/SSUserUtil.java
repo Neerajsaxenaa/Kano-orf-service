@@ -19,7 +19,6 @@ import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.repository.RolesRepository;
 import co.deepmindz.adminorghierservice.repository.SSUserRepository;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes.SupervisorOfSSUSer;
-import lombok.val;
 
 @Service
 public class SSUserUtil {
@@ -37,30 +36,28 @@ public class SSUserUtil {
 
 		String immediateLinkedZone = null;
 		SSUser ssUser = new SSUser();
-		ssUser.setName(ssUserDto.getUserName());
+		ssUser.setUsername(ssUserDto.getUserName());
 		ssUser.setRole_id(ssUserDto.getRole());
 		List<String> linkedParentZones = new ArrayList<>();
 		for (int i = 0; i < ssUserDto.getLinked_zones().length; i++) {
 			if (i == ssUserDto.getLinked_zones().length - 1) {
 				immediateLinkedZone = ssUserDto.getLinked_zones()[i].getZone_id();
 			}
-			
+
 			linkedParentZones
 					.add(ssUserDto.getLinked_zones()[i].getZone() + ":" + ssUserDto.getLinked_zones()[i].getZone_id());
 		}
 		ssUser.setLinkedParentZones(linkedParentZones.toArray(new String[linkedParentZones.size()]));
 		ssUser.setLinkedZone(immediateLinkedZone);
 		ssUser.setStatus(Templates.USERSTATUS.ACTIVE.name());
-		if (loginmode.equals("Two_FA")) {
-			ssUser.setUsername(ssUserDto.getPhoneNumber());
-		} else {
-			ssUser.setUsername(ssUserDto.getUserName());
+		ssUser.setPhoneNumber(ssUserDto.getPhoneNumber());
+		if (loginmode.equals(Templates.LOGINMODES.USER_CREDENTIALS.name()))
 			ssUser.setPassword(passwordEncoder.encode(ssUserDto.getPassword()));
-		}
 
 		List<String> supervisors = new ArrayList<>();
 		for (SupervisorOfSSUSer obj : ssUserDto.getLinked_supervisors())
 			supervisors.add(obj.supervisor_id);
+
 		ssUser.setLinkedSupervisors(supervisors.toArray(new String[supervisors.size()]));
 		return ssUser;
 	}
@@ -88,8 +85,8 @@ public class SSUserUtil {
 			supervisorslist.add(supervisor);
 		}
 
-		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
-				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
+		return new SSUserResponseDto(user.getUser_id(), idWithRoleNameMap.get(user.getRole_id()), user.getUsername(),
+				user.getPhoneNumber(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisorslist.toArray(new String[supervisorslist.size()]), user.getCreated_at());
 	}
 
@@ -141,8 +138,8 @@ public class SSUserUtil {
 			supervisors.add(supervisor);
 		}
 
-		return new SSUserResponseDto(user.getUser_id(), user.getName(), idWithRoleNameMap.get(user.getRole_id()),
-				user.getUsername(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
+		return new SSUserResponseDto(user.getUser_id(), idWithRoleNameMap.get(user.getRole_id()), user.getUsername(),
+				user.getPhoneNumber(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisors.toArray(new String[supervisors.size()]), user.getCreated_at());
 	}
 
@@ -151,7 +148,7 @@ public class SSUserUtil {
 		for (SSUser ssuser : findAllById) {
 			SSResponseDtoForRestCall ssResponseDtoForRestCall = new SSResponseDtoForRestCall();
 			ssResponseDtoForRestCall.setMember_id(ssuser.getUser_id());
-			ssResponseDtoForRestCall.setMember_name(ssuser.getName());
+//			ssResponseDtoForRestCall.setMember_name(ssuser.getName());
 			ssResponseDtoForRestCall.setPhone_number(ssuser.getPhoneNumber());
 			ssResponseDtoForRestCall.setUser_name(ssuser.getUsername());
 			ssResponseDtoForRestCall.setDesignation(ssuser.getRole_id());

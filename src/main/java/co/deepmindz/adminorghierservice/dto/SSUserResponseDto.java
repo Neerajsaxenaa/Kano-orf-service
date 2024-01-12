@@ -15,11 +15,13 @@ public class SSUserResponseDto {
 
 	private String id;
 
-	private String name;
+//	private String name;
 
 	private String role;
 
 	private String username;
+
+	private String phoneNumber;
 
 //	private String password;
 
