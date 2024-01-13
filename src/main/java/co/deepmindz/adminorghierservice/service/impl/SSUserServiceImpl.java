@@ -12,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.squareup.okhttp.OkHttpClient;
-
 import co.deepmindz.adminorghierservice.dto.ListSSUserZonesResponseDto;
 import co.deepmindz.adminorghierservice.dto.MemberResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
