@@ -201,4 +201,9 @@ public class SSUserServiceImpl implements SSUserService {
 		return message;
 	}
 
+	@Override
+	public boolean appointAsTeamLeads(List<String> user_id) {
+		ssUserRepository.appointAsTeamLead(user_id);
+		return true;
+	}
 }

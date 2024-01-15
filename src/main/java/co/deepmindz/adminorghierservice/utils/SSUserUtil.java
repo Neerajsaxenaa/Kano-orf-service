@@ -120,12 +120,11 @@ public class SSUserUtil {
 	}
 
 	public SSUserResponseDto mapEntityToResponseDtoForAllSSUser(SSUser user, Map<String, String> idWithSSUserNameMap) {
-
 		List<Roles> allRoles = rolesRepository.findAll();
 		Map<String, String> idWithRoleNameMap = new HashMap<>();
 		for (Roles roles : allRoles)
 			idWithRoleNameMap.put(roles.getRole_id(), roles.getTitle());
-
+		
 		List<String> allLinkedZoneNames = new ArrayList<>();
 		for (String zone : user.getLinkedParentZones()) {
 			allLinkedZoneNames.add(zone.split(":")[0]);
@@ -142,6 +141,7 @@ public class SSUserUtil {
 				user.getPhoneNumber(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
 				supervisors.toArray(new String[supervisors.size()]), user.getCreated_at());
 	}
+
 
 	public List<SSResponseDtoForRestCall> mapListOfSSUserToListOfSSResponse(List<SSUser> findAllById) {
 		List<SSResponseDtoForRestCall> ssResponseDtoForRestCallList = new ArrayList<>();
