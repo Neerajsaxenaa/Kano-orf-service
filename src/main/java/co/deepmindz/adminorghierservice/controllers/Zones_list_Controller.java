@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
@@ -29,8 +30,6 @@ import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
-import co.deepmindz.adminorghierservice.utils.CustomDataTypes.ParentZoneIds;
-import co.deepmindz.adminorghierservice.utils.CustomDataTypes.PhcIds;
 import jakarta.validation.Valid;
 
 @RestController
@@ -165,29 +164,16 @@ public class Zones_list_Controller {
 		return zones_list_ResponseDtos;
 
 	}
-	
-	@PostMapping("/getCordinator-by-parentZone")
-	public ResponseEntity<Object> getCordinatorByParentZone(@RequestBody ParentZoneIds parentZoneIds) {
-		List<Zones_list> allCordinators = zones_list_service.getCordinatorByParentZone(parentZoneIds);
-		List<Map<String, String>> cordinators = new ArrayList<>();
+
+	/*
+	 * get cordinator by given phc ids
+	 */
+	@PostMapping("/get-cordinatorsby-linked-zoneId")
+	public ResponseEntity<Object> getCordinatorByLinkedZoneId(@RequestParam String[] zoneId) {
+		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId);
+		List<String> cordinators = new ArrayList<>();
 		for (Zones_list zones_list : allCordinators) {
-			Map<String, String> usersWithLinkedZones = new HashMap<>();
-			usersWithLinkedZones.put("parentZone", zones_list.getBelongs_to_zone());
-			usersWithLinkedZones.put("cordinator", zones_list.getCordinator());
-			cordinators.add(usersWithLinkedZones);
-		}
-		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
-	}
-	
-	@PostMapping("/getCordinator-by-phcIds")
-	public ResponseEntity<Object> getCordinatorByPhc(@RequestBody PhcIds phcIds) {
-		List<Zones_list> allCordinators = zones_list_service.getCordinatorByPhc(phcIds);
-		List<Map<String, String>> cordinators = new ArrayList<>();
-		for (Zones_list zones_list : allCordinators) {
-			Map<String, String> usersWithLinkedZones = new HashMap<>();
-//			usersWithLinkedZones.put("id", zones_list.get_id());
-			usersWithLinkedZones.put("cordinator", zones_list.getCordinator());
-			cordinators.add(usersWithLinkedZones);
+			cordinators.add(zones_list.getCordinator());
 		}
 		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
 	}

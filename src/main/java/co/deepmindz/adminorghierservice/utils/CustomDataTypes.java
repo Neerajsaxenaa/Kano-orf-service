@@ -57,20 +57,4 @@ public class CustomDataTypes {
 		public String supervisor_id;
 	}
 
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class ParentZoneIds {
-		List<String> parentZoneIds;
-
-	}
-
-	@Data
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class PhcIds {
-		List<String> phcIds;
-
-	}
-
 }
