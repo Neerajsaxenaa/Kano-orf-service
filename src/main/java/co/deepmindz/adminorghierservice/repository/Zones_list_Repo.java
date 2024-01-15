@@ -39,4 +39,7 @@ public interface Zones_list_Repo extends JpaRepository<Zones_list, String> {
 
 	@Query(nativeQuery = true, value = "SELECT * FROM Zones_list as z WHERE z.belongs_to_zone IN (:parentZoneIds)")
 	public List<Zones_list> getCordinatorByParentZone(List<String> parentZoneIds);
+
+	@Query(nativeQuery = true, value = "SELECT * FROM Zones_list as z WHERE z._id IN (:phcIds)")
+	public List<Zones_list> getCordinatorByPhc(List<String> phcIds);
 }

@@ -20,6 +20,7 @@ import co.deepmindz.adminorghierservice.repository.ZoneRepo;
 import co.deepmindz.adminorghierservice.repository.Zones_list_Repo;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes.ParentZoneIds;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.PhcIds;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
 
 @Service
@@ -198,6 +199,11 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 	@Override
 	public List<Zones_list> getCordinatorByParentZone(ParentZoneIds parentZoneIds) {
 		return zones_list_Repo.getCordinatorByParentZone(parentZoneIds.getParentZoneIds());
+	}
+
+	@Override
+	public List<Zones_list> getCordinatorByPhc(PhcIds phcIds) {
+		return zones_list_Repo.getCordinatorByPhc(phcIds.getPhcIds());
 	}
 
 

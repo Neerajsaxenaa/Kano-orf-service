@@ -11,6 +11,7 @@ import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_with_parentZone_response;
 import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes.ParentZoneIds;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.PhcIds;
 
 @Service
 public interface Zones_list_service {
@@ -32,6 +33,8 @@ public interface Zones_list_service {
     JSONObject getAllZoneListByRelationshipId(String linked_zone, String getParent_zone_list_id);
 
 	List<Zones_list> getCordinatorByParentZone(ParentZoneIds parentZoneIds);
+
+	List<Zones_list> getCordinatorByPhc(PhcIds phcIds);
 
 
 }

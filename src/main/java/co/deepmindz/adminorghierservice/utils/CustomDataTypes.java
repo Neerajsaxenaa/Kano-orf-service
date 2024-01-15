@@ -65,4 +65,12 @@ public class CustomDataTypes {
 
 	}
 
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class PhcIds {
+		List<String> phcIds;
+
+	}
+
 }

@@ -30,6 +30,7 @@ import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes.ParentZoneIds;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.PhcIds;
 import jakarta.validation.Valid;
 
 @RestController
@@ -166,15 +167,28 @@ public class Zones_list_Controller {
 	}
 	
 	@PostMapping("/getCordinator-by-parentZone")
-	public List<Map<String, String>> getCordinatorByParentZone(@RequestBody ParentZoneIds parentZoneIds) {
+	public ResponseEntity<Object> getCordinatorByParentZone(@RequestBody ParentZoneIds parentZoneIds) {
 		List<Zones_list> allCordinators = zones_list_service.getCordinatorByParentZone(parentZoneIds);
-		List<Map<String, String>> data = new ArrayList<>();
+		List<Map<String, String>> cordinators = new ArrayList<>();
 		for (Zones_list zones_list : allCordinators) {
 			Map<String, String> usersWithLinkedZones = new HashMap<>();
 			usersWithLinkedZones.put("parentZone", zones_list.getBelongs_to_zone());
 			usersWithLinkedZones.put("cordinator", zones_list.getCordinator());
-			data.add(usersWithLinkedZones);
+			cordinators.add(usersWithLinkedZones);
 		}
-		return data;
+		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
+	}
+	
+	@PostMapping("/getCordinator-by-phcIds")
+	public ResponseEntity<Object> getCordinatorByPhc(@RequestBody PhcIds phcIds) {
+		List<Zones_list> allCordinators = zones_list_service.getCordinatorByPhc(phcIds);
+		List<Map<String, String>> cordinators = new ArrayList<>();
+		for (Zones_list zones_list : allCordinators) {
+			Map<String, String> usersWithLinkedZones = new HashMap<>();
+//			usersWithLinkedZones.put("id", zones_list.get_id());
+			usersWithLinkedZones.put("cordinator", zones_list.getCordinator());
+			cordinators.add(usersWithLinkedZones);
+		}
+		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
 	}
 }
