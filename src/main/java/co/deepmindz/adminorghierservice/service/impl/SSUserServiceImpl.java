@@ -18,6 +18,7 @@ import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
+import co.deepmindz.adminorghierservice.models.Roles;
 import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.repository.RolesRepository;
@@ -26,7 +27,7 @@ import co.deepmindz.adminorghierservice.repository.Zones_list_Repo;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.utils.SSUserUtil;
-import co.deepmindz.adminorghierservice.utils.Templates;
+import co.deepmindz.adminorghierservice.utils.Templates.USERSTATUS;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
 
 @Service
@@ -105,6 +106,29 @@ public class SSUserServiceImpl implements SSUserService {
 		return response;
 	}
 
+	public List<SSUserResponseDto> getAllSSUsersByCoordinatorId(String coordinatorID) {
+		List<SSUser> allUsers = new ArrayList<>();
+		allUsers = ssUserRepository.findByLinkedSupervisors(new String[] { coordinatorID });
+		if (allUsers.isEmpty() || allUsers.size() == 0)
+			return null;
+
+		List<Roles> allRoles = rolesRepository.findAll();
+		Map<String, String> idWithRoleNameMap = new HashMap<>();
+		for (Roles roles : allRoles)
+			idWithRoleNameMap.put(roles.getRole_id(), roles.getTitle());
+
+		List<SSUserResponseDto> responseList = new ArrayList<>();
+		for (SSUser user : allUsers) {
+			List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
+			Map<String, String> idWithSSUserNameMap = new HashMap<>();
+			for (SSUser user2 : supervisors)
+				idWithSSUserNameMap.put(user2.getUser_id(), user2.getUsername());
+			responseList
+					.add(ssUserUtil.mapEntityToResponseDtoForAllSSUser(user, idWithSSUserNameMap, idWithRoleNameMap));
+		}
+		return responseList;
+	}
+
 	public List<SSUserResponseDto> getAllSSUsers(String userIDorUsername, boolean isfindByUsername) {
 		List<SSUser> allUsers = new ArrayList<>();
 		if (userIDorUsername == null)
@@ -121,13 +145,19 @@ public class SSUserServiceImpl implements SSUserService {
 		if (allUsers.isEmpty() || allUsers.size() == 0)
 			return null;
 
+		List<Roles> allRoles = rolesRepository.findAll();
+		Map<String, String> idWithRoleNameMap = new HashMap<>();
+		for (Roles roles : allRoles)
+			idWithRoleNameMap.put(roles.getRole_id(), roles.getTitle());
+
 		List<SSUserResponseDto> responseList = new ArrayList<>();
 		for (SSUser user : allUsers) {
 			List<SSUser> supervisors = ssUserRepository.findAllById(List.of(user.getLinkedSupervisors()));
 			Map<String, String> idWithSSUserNameMap = new HashMap<>();
 			for (SSUser user2 : supervisors)
 				idWithSSUserNameMap.put(user2.getUser_id(), user2.getUsername());
-			responseList.add(ssUserUtil.mapEntityToResponseDtoForAllSSUser(user, idWithSSUserNameMap));
+			responseList
+					.add(ssUserUtil.mapEntityToResponseDtoForAllSSUser(user, idWithSSUserNameMap, idWithRoleNameMap));
 		}
 		return responseList;
 	}
@@ -158,22 +188,12 @@ public class SSUserServiceImpl implements SSUserService {
 	}
 
 	@Override
-	public ResponseEntity<Object> updateUserByIds(String[] memberIds) {
-		List<SSUser> findByIds = ssUserRepository.findByIds(memberIds);
-		if (findByIds.isEmpty() || findByIds == null) {
-			return CustomHttpResponse.responseBuilder("Member details not found ", HttpStatus.NOT_FOUND, findByIds);
-		}
-		for (SSUser ssuser : findByIds) {
-			String status = ssuser.getStatus();
-			if (status.equals(Templates.USERSTATUS.OCCUPIED.name())) {
-				return CustomHttpResponse.responseBuilder("Member already occupied , please choose active member..!!",
-						HttpStatus.IM_USED, "Member occupied..!!");
-			}
-			ssuser.setStatus(Templates.USERSTATUS.OCCUPIED.name());
-			ssUserRepository.save(ssuser);
+	public ResponseEntity<Object> updateSSUserasOccupiedorActiveByIds(String[] memberIds, USERSTATUS status) {
+		List<SSUser> allMembers = ssUserRepository.findByIds(memberIds);
+		allMembers.stream().forEach(a -> a.setStatus(USERSTATUS.OCCUPIED.name()));
 
-		}
-		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, findByIds);
+		ssUserRepository.saveAll(allMembers);
+		return CustomHttpResponse.responseBuilder("Member details", HttpStatus.OK, allMembers);
 	}
 
 	@Override
