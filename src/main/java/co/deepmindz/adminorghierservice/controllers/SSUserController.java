@@ -33,7 +33,6 @@ import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
-import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.SSUserService;
@@ -309,5 +308,10 @@ public class SSUserController {
 		if (status)
 			return CustomHttpResponse.responseBuilder("Team Lead appointed sucessfully", HttpStatus.OK, status);
 		return CustomHttpResponse.responseBuilder("Team Lead appoint failed", HttpStatus.OK, status);
+	}
+	@PostMapping("/block-unblock-ssuser/{id}")
+	public ResponseEntity<Object> blockAndUnblockUser(@PathVariable String id){
+		String response = ssUserService.blockAndUnblockUser(id);
+		return CustomHttpResponse.responseBuilder(response, HttpStatus.OK, id);
 	}
 }

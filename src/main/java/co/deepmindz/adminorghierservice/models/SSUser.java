@@ -52,6 +52,8 @@ public class SSUser {
 	@NotNull
 	private String linkedZone; // Include the immediate linked zone
 
+	private boolean active;
+	
 	@Column(name = "is_team_lead")
 	private boolean isTeamLead;
 

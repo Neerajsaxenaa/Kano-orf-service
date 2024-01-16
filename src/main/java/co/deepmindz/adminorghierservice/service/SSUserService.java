@@ -44,5 +44,6 @@ public interface SSUserService {
 	public String updateUsers(String user_id, SSUserUpdateRequestDto updateRequest);
 
 	public boolean appointAsTeamLeads(List<String> user_id);
-
+	
+	public String blockAndUnblockUser(String id);
 }
