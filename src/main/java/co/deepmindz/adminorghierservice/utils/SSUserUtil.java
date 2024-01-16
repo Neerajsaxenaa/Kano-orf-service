@@ -119,12 +119,9 @@ public class SSUserUtil {
 				user.getCreated_at());
 	}
 
-	public SSUserResponseDto mapEntityToResponseDtoForAllSSUser(SSUser user, Map<String, String> idWithSSUserNameMap) {
-		List<Roles> allRoles = rolesRepository.findAll();
-		Map<String, String> idWithRoleNameMap = new HashMap<>();
-		for (Roles roles : allRoles)
-			idWithRoleNameMap.put(roles.getRole_id(), roles.getTitle());
-		
+	public SSUserResponseDto mapEntityToResponseDtoForAllSSUser(SSUser user, Map<String, String> idWithSSUserNameMap,
+			Map<String, String> idWithRoleNameMap) {
+
 		List<String> allLinkedZoneNames = new ArrayList<>();
 		for (String zone : user.getLinkedParentZones()) {
 			allLinkedZoneNames.add(zone.split(":")[0]);

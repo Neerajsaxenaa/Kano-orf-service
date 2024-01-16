@@ -40,6 +40,7 @@ import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.service.ZoneService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.Templates;
+import co.deepmindz.adminorghierservice.utils.Templates.USERSTATUS;
 import jakarta.validation.Valid;
 
 @RestController
@@ -205,22 +206,33 @@ public class SSUserController {
 				ssUserService.getAllSSUsers(userid, false));
 	}
 
+	@PostMapping("/get-ssuser-bycoordinatorid/{coordinatorid}")
+	public ResponseEntity<Object> getAllSSUsersByCoordinatorId(@PathVariable("coordinatorid") String coordinatorid) {
+		List<SSUserResponseDto> allSSUsers = ssUserService.getAllSSUsersByCoordinatorId(coordinatorid);
+		if (allSSUsers == null)
+			return CustomHttpResponse.responseBuilder("No SSUser found", HttpStatus.OK, coordinatorid);
+		return CustomHttpResponse.responseBuilder("AllSSUsers by CoordinatorId", HttpStatus.OK, allSSUsers);
+	}
+
 	@GetMapping("/get-user-all-zonedetails")
 	public ResponseEntity<Object> getSSUserZonewithSubZoneDetails(@RequestParam String userid) {
 		return CustomHttpResponse.responseBuilder("SSUser Details : ", HttpStatus.OK,
 				ssUserService.getSSUserZonewithSubZoneDetails(userid));
 	}
 
-	@PostMapping("/update-by-ssuser-ids")
-	public Object updateUserByIds(@RequestBody String[] ssuserids) {
-		return ssUserService.updateUserByIds(ssuserids);
+	@PostMapping("/update-ssusersas-occupied")
+	public Object updateSSUserasOccupied(@RequestBody String[] ssuserids) {
+		return ssUserService.updateSSUserasOccupiedorActiveByIds(ssuserids, USERSTATUS.ACTIVE);
+	}
 
+	@PostMapping("/update-ssusersas-active")
+	public Object updateSSUserasFree(@RequestBody String[] ssuserids) {
+		return ssUserService.updateSSUserasOccupiedorActiveByIds(ssuserids, USERSTATUS.OCCUPIED);
 	}
 
 	@PostMapping("/all-ssuser-by-ids-forRestcall")
 	public List<SSResponseDtoForRestCall> allSSUserByIds(@RequestBody String[] ssuserids) {
 		return ssUserService.allSSUserByIds(Arrays.asList(ssuserids));
-
 	}
 
 	@PostMapping("/set-configuration")

@@ -23,12 +23,11 @@ public class SSUserRequestDto {
 	@NotNull
 	private String role;
 
-	private String name;
-	
+	@NotEmpty
 	@NotNull
-	private String phoneNumber; 
+	private String phoneNumber;
 
-//	private String user;
+//	private String name;
 
 	private String password;
 

@@ -34,5 +34,4 @@ public interface SSUserRepository extends JpaRepository<SSUser, String> {
 	@Transactional
 	@Query(value = "update SSUser SET is_team_lead = TRUE WHERE user_id IN :userId", nativeQuery = true)
 	public void appointAsTeamLead(@Param("userId") List<String> userId);
-
 }

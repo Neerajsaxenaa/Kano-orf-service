@@ -12,6 +12,7 @@ import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
 import co.deepmindz.adminorghierservice.models.Zones_list;
+import co.deepmindz.adminorghierservice.utils.Templates.USERSTATUS;
 
 @Service
 public interface SSUserService {
@@ -30,11 +31,13 @@ public interface SSUserService {
 
 	List<SSUserResponseDto> getAllSSUsers(String userIDorUsername, boolean isfindByUsername);
 
+	List<SSUserResponseDto> getAllSSUsersByCoordinatorId(String coordinatorID);
+
 	List<Zones_list> getSSUserZonewithSubZoneDetails(String ssuserID);
 
 	List<MemberResponseDto> getTeamMemberByZoneId(String zoneId);
 
-	ResponseEntity<Object> updateUserByIds(String[] ssuserids);
+	ResponseEntity<Object> updateSSUserasOccupiedorActiveByIds(String[] ssuserids, USERSTATUS status);
 
 	List<SSResponseDtoForRestCall> allSSUserByIds(List<String> list);
 
