@@ -30,6 +30,7 @@ import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.LinkedZoneIds;
 import jakarta.validation.Valid;
 
 @RestController
@@ -158,7 +159,7 @@ public class Zones_list_Controller {
 		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList.get(0));
 	}
 
-	@PostMapping("/get-all-zonelist")
+	@GetMapping("/get-all-zonelist")
 	public List<Zones_list_ResponseDto> getAllZonesListForOtherServices(@RequestBody String[] zoneIds) {
 		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList(zoneIds);
 		return zones_list_ResponseDtos;
@@ -168,13 +169,23 @@ public class Zones_list_Controller {
 	/*
 	 * get cordinator by given phc ids
 	 */
-	@PostMapping("/get-cordinatorsby-linked-zoneId")
-	public ResponseEntity<Object> getCordinatorByLinkedZoneId(@RequestParam String[] zoneId) {
+//	@PostMapping("/get-cordinatorsby-linked-zoneId")
+//	public ResponseEntity<Object> getCordinatorByLinkedZoneId(@RequestBody LinkedZoneIds zoneId) {
+//		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId.getLinkedZoneid());
+//		List<String> cordinators = new ArrayList<>();
+//		for (Zones_list zones_list : allCordinators) {
+//			cordinators.add(zones_list.getCordinator());
+//		}
+//		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
+//	}
+	
+	@PostMapping("/get-cordinatorsby-linked-zoneId-for-restcall")
+	public List<String> getCordinatorByLinkedZoneId(@RequestBody List<String> zoneId) {
 		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId);
 		List<String> cordinators = new ArrayList<>();
 		for (Zones_list zones_list : allCordinators) {
 			cordinators.add(zones_list.getCordinator());
 		}
-		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
+		return cordinators;
 	}
 }

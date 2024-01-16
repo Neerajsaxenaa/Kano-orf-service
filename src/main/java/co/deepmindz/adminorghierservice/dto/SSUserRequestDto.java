@@ -25,7 +25,7 @@ public class SSUserRequestDto {
 
 	@NotEmpty
 	@NotNull
-	private String phoneNumber; 
+	private String phoneNumber;
 
 //	private String name;
 

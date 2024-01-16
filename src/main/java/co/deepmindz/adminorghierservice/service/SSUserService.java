@@ -13,7 +13,11 @@ import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
 import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
+<<<<<<< HEAD
 import jakarta.validation.Valid;
+=======
+import co.deepmindz.adminorghierservice.utils.Templates.USERSTATUS;
+>>>>>>> branch 'main' of https://github.com/SS-Whitelabel/ss-admin-org-hierarchy-service.git
 
 @Service
 public interface SSUserService {
@@ -32,16 +36,18 @@ public interface SSUserService {
 
 	List<SSUserResponseDto> getAllSSUsers(String userIDorUsername, boolean isfindByUsername);
 
+	List<SSUserResponseDto> getAllSSUsersByCoordinatorId(String coordinatorID);
+
 	List<Zones_list> getSSUserZonewithSubZoneDetails(String ssuserID);
 
 	List<MemberResponseDto> getTeamMemberByZoneId(String zoneId);
 
-	ResponseEntity<Object> updateUserByIds(String[] ssuserids);
+	ResponseEntity<Object> updateSSUserasOccupiedorActiveByIds(String[] ssuserids, USERSTATUS status);
 
 	List<SSResponseDtoForRestCall> allSSUserByIds(List<String> list);
 
 	public String updateUsers(String user_id, SSUserUpdateRequestDto updateRequest);
 
-	SSUser getSSUserById(@Valid String userid) throws Exception;
+	public boolean appointAsTeamLeads(List<String> user_id);
 
 }

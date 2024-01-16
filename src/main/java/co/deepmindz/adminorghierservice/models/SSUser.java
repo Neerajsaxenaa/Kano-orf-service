@@ -42,7 +42,7 @@ public class SSUser {
 	private String username;
 	
 	private String phoneNumber;
-
+	
 	private String password;
 
 	@NotNull
@@ -52,6 +52,7 @@ public class SSUser {
 	@NotNull
 	private String linkedZone; // Include the immediate linked zone
 
+	@Column(name = "is_team_lead")
 	private boolean isTeamLead;
 
 	private String[] linkedSupervisors;
