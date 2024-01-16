@@ -46,7 +46,7 @@ public class ZoneController {
 	public ResponseEntity<Object> zoneById(@PathVariable String zoneId) {
 		logger.info("ZoneController.class:zoneById():zoneId", zoneId);
 		ZonesResponseDto responseDto = zoneService.zoneById(zoneId);
-		if (zoneService.zoneById(zoneId) != null) {
+		if (responseDto!= null) {
 			return CustomHttpResponse.responseBuilder("Zones with zoneId : " + zoneId, HttpStatus.OK, responseDto);
 		}
 		return CustomHttpResponse.responseBuilder("Zones not found with zoneId  : " + zoneId, HttpStatus.OK,

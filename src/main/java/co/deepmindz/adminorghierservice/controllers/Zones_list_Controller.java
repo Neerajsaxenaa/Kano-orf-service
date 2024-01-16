@@ -1,5 +1,7 @@
 package co.deepmindz.adminorghierservice.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
@@ -23,9 +26,11 @@ import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
+import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
+import co.deepmindz.adminorghierservice.utils.CustomDataTypes.LinkedZoneIds;
 import jakarta.validation.Valid;
 
 @RestController
@@ -154,10 +159,33 @@ public class Zones_list_Controller {
 		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList.get(0));
 	}
 
-	@PostMapping("/get-all-zonelist")
+	@GetMapping("/get-all-zonelist")
 	public List<Zones_list_ResponseDto> getAllZonesListForOtherServices(@RequestBody String[] zoneIds) {
 		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList(zoneIds);
 		return zones_list_ResponseDtos;
 
+	}
+
+	/*
+	 * get cordinator by given phc ids
+	 */
+//	@PostMapping("/get-cordinatorsby-linked-zoneId")
+//	public ResponseEntity<Object> getCordinatorByLinkedZoneId(@RequestBody LinkedZoneIds zoneId) {
+//		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId.getLinkedZoneid());
+//		List<String> cordinators = new ArrayList<>();
+//		for (Zones_list zones_list : allCordinators) {
+//			cordinators.add(zones_list.getCordinator());
+//		}
+//		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
+//	}
+	
+	@PostMapping("/get-cordinatorsby-linked-zoneId-for-restcall")
+	public List<String> getCordinatorByLinkedZoneId(@RequestBody List<String> zoneId) {
+		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId);
+		List<String> cordinators = new ArrayList<>();
+		for (Zones_list zones_list : allCordinators) {
+			cordinators.add(zones_list.getCordinator());
+		}
+		return cordinators;
 	}
 }

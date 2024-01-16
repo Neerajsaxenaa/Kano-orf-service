@@ -30,10 +30,6 @@ public interface Zones_list_Repo extends JpaRepository<Zones_list, String> {
 	public List<Zones_list> getListParentZoneItems(@Param("belongs_to_zone") String belongs_to_zone,
 			@Param("getParent_zone_list_id") String getParent_zone_list_id);
 
-//
-//	@Query(value = "select z from Zones_list z where z.belongs_to_zone IN :belongs_to_zone")
-//	public Optional<Object> getZoneListIdByBelongsToId(@Param("belongs_to_zone") String belongs_to_zone);
-
 	@Query(value = "select z from Zones_list z where z.linked_zone_list = :linked_zone")
 	public List<Zones_list> getAllZonesByRelationshipId(String linked_zone);
 
