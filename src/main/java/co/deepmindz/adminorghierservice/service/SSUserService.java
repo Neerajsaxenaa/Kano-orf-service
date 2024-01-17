@@ -21,8 +21,6 @@ public interface SSUserService {
 
 	ListSSUserZonesResponseDto getAllZoneForSSUser(String role, List<String> parentZoneID);
 
-//	List<Zones_list_ResponseDto> getSubZonesLevelDetails(ListSSUserSubZonesRequestDto dto);
-
 	SSUserResponseDto createSSUser(SSUserRequestDto createSSUserData, String loginmode);
 
 	List<SSUserResponseDto> getSubordinateRoleSSUsers(String roleID);

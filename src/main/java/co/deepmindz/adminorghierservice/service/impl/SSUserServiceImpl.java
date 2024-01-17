@@ -78,12 +78,6 @@ public class SSUserServiceImpl implements SSUserService {
 				createdUser.getCreated_at());
 	}
 
-//	public List<Zones_list_ResponseDto> getSubZonesLevelDetails(ListSSUserSubZonesRequestDto dto) {
-//		List<Zones_list> zones = zones_list_Repo.getZonesUsingLinkedZonesUsingInClause(List.of(dto.getZone_id()));
-//
-//		return zones_list_util.mapEntityToResponseDto(zones);
-//	}
-
 	public List<SSUserResponseDto> getSubordinateRoleSSUsers(String roleID) {
 		List<SSUser> subUsers = ssUserRepository.findByLinkedSupervisors(new String[] { roleID });
 		List<SSUserResponseDto> response = new ArrayList<>();
