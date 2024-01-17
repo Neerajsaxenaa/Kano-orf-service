@@ -31,5 +31,6 @@ public class Zones_list {
 	private String linked_zone_list;
 	private String code;
 	private String belongs_to_zone;
+	private String cordinator;
 
 }

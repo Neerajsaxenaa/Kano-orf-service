@@ -265,4 +265,9 @@ public class SSUserController {
 			return CustomHttpResponse.responseBuilder("Team Lead appointed sucessfully", HttpStatus.OK, status);
 		return CustomHttpResponse.responseBuilder("Team Lead appoint failed", HttpStatus.OK, status);
 	}
+	@PostMapping("/block-unblock-ssuser/{id}")
+	public ResponseEntity<Object> blockAndUnblockUser(@PathVariable String id){
+		String response = ssUserService.blockAndUnblockUser(id);
+		return CustomHttpResponse.responseBuilder(response, HttpStatus.OK, id);
+	}
 }

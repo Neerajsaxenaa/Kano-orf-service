@@ -18,6 +18,7 @@ import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
+import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
 import co.deepmindz.adminorghierservice.models.Roles;
 import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
@@ -29,6 +30,7 @@ import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.utils.SSUserUtil;
 import co.deepmindz.adminorghierservice.utils.Templates.USERSTATUS;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
+import jakarta.validation.Valid;
 
 @Service
 public class SSUserServiceImpl implements SSUserService {
@@ -215,9 +217,22 @@ public class SSUserServiceImpl implements SSUserService {
 		return message;
 	}
 
-	@Override
 	public boolean appointAsTeamLeads(List<String> user_id) {
 		ssUserRepository.appointAsTeamLead(user_id);
 		return true;
+	}
+
+	public String blockAndUnblockUser(String id) {
+		SSUser user = ssUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("SSUSER", id, id));
+		String message = "";
+		if (user.isActive())
+			user.setActive(false);
+		else
+			user.setActive(true);
+		SSUser savedUser = ssUserRepository.save(user);
+		message = "user updated sucessfully";
+		if (savedUser == null)
+			message = "something went wrong";
+		return message;
 	}
 }

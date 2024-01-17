@@ -86,17 +86,16 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 		if (zones_list.isEmpty() || zones_list == null) {
 			return null;
 		}
-		
+
 		Zones_list z_list = new Zones_list();
-		
+
 //		if (zones_listDto.getName().contentEquals(findAll.size()))) {
 //			 z_list.setName("zone name already found..!!");
 ////			 z_list.se
 //			 return zones_list_util.mapEntityToResponseDto(z_list);
 ////			return "";
 //		}
-		
-	
+
 		z_list.set_id(zones_list.get().get_id());
 		z_list.setName(zones_listDto.getName().toUpperCase());
 		z_list.setBelongs_to_zone(zones_list.get().getBelongs_to_zone());
@@ -177,7 +176,6 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 		JSONObject response = new JSONObject();
 		response.put("zone", zoneArray);
 		response.put("linked_zone_list", linkedZoneArray);
-
 		return response;
 	}
 
@@ -193,6 +191,12 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 			linkedZoneArray.put(zoneObject);
 		}
 		return linkedZoneArray;
+	}
+
+	@Override
+	public List<Zones_list> getCordinatorByLinkedZoneId(List<String> zoneId) {
+		 List<Zones_list> findAllById = zones_list_Repo.findAllById(zoneId);
+		 return findAllById;
 	}
 
 }

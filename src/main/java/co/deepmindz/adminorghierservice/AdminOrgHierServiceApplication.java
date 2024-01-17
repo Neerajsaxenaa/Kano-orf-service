@@ -10,10 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-public class AdminOrgHierServiceApplication extends SpringBootServletInitializer{
+public class AdminOrgHierServiceApplication extends SpringBootServletInitializer {
 
 	@Bean
-	@LoadBalanced
+//	@LoadBalanced
 	RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
@@ -21,9 +21,10 @@ public class AdminOrgHierServiceApplication extends SpringBootServletInitializer
 	public static void main(String[] args) {
 		SpringApplication.run(AdminOrgHierServiceApplication.class, args);
 	}
-	
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 }
