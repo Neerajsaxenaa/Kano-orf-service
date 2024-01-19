@@ -34,6 +34,7 @@ import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.ZoneService;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes;
 import co.deepmindz.adminorghierservice.utils.Templates;
+import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import jakarta.validation.Valid;
 
 /*
@@ -135,7 +136,8 @@ public class RolesController {
 			RequestEntity<Void> request = RequestEntity
 					.get(services[0] + "/admin-main/login-mode/current-loginMode-status")
 					.accept(MediaType.APPLICATION_JSON).build();
-			loginmode = restTemplate.exchange(request, responseType).getBody();
+			loginmode = restTemplate.exchange(request,
+					responseType).getBody();
 		}
 
 		for (RolesResponseDto manager : allmanagers) {

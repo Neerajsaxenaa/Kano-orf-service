@@ -30,7 +30,7 @@ public interface Zones_list_service {
 
 	JSONObject getAllZoneListByRelationshipId(String linked_zone, String getParent_zone_list_id);
 
-	List<Zones_list> getCordinatorByLinkedZoneId(List<String> list);
+	List<String> getCordinatorByLinkedZoneId(String zoneId);
 
 
 }

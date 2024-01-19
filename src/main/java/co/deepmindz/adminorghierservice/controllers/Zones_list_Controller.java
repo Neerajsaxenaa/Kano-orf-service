@@ -183,14 +183,10 @@ public class Zones_list_Controller {
 //		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
 //	}
 	
-	@PostMapping("/get-cordinatorsby-linked-zoneId-for-restcall")
-	public List<String> getCordinatorByLinkedZoneId(@RequestBody List<String> zoneId) {
-		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId);
-		List<String> cordinators = new ArrayList<>();
-		for (Zones_list zones_list : allCordinators) {
-			cordinators.add(zones_list.getCordinator());
-		}
-		return cordinators;
+	@GetMapping("/get-cordinatorsby-linked-zoneId-for-restcall/{zoneId}")
+	public Object getCordinatorByLinkedZoneId(@PathVariable String zoneId) {
+		return zones_list_service.getCordinatorByLinkedZoneId(zoneId);
+	
 	}
 	
 }

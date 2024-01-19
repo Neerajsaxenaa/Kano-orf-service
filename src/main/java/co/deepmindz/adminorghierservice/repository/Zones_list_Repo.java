@@ -36,4 +36,7 @@ public interface Zones_list_Repo extends JpaRepository<Zones_list, String> {
 	@Query(value = "select z from Zones_list z where z.linked_zone_list = :linked_zone")
 	public List<Zones_list> getAllParentListData(String linked_zone);
 
+	@Query("select cordinator from Zones_list z where z.id = :zoneId")
+	public List<String> getCordinatorByLinkedZoneId(String zoneId);
+
 }
