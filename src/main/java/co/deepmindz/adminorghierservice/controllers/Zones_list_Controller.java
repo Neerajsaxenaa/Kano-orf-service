@@ -163,7 +163,7 @@ public class Zones_list_Controller {
 		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList.get(0));
 	}
 
-	@GetMapping("/get-all-zonelist")
+	@PostMapping("/get-all-zonelist")
 	public List<Zones_list_ResponseDto> getAllZonesListForOtherServices(@RequestBody String[] zoneIds) {
 		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList(zoneIds);
 		return zones_list_ResponseDtos;
