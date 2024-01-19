@@ -126,6 +126,7 @@ public class SSUserServiceImpl implements SSUserService {
 
 	public List<SSUserResponseDto> getAllSSUsers(String userIDorUsername, boolean isfindByUsername) {
 		List<SSUser> allUsers = new ArrayList<>();
+		allUsers = ssUserRepository.findByUserIdSorted(userIDorUsername);
 		if (userIDorUsername == null)
 			allUsers = ssUserRepository.findAll();
 		else if (isfindByUsername) {
