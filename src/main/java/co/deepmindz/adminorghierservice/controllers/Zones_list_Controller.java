@@ -27,6 +27,7 @@ import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
 import co.deepmindz.adminorghierservice.models.Zones_list;
+import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
@@ -42,6 +43,9 @@ public class Zones_list_Controller {
 
 	@Autowired
 	private ZoneListService zoneListService;
+	
+	@Autowired
+	SSUserService ssUserService;
 
 	@GetMapping("/get-all-zones")
 	public ResponseEntity<Object> getAllZonesList() {
@@ -188,4 +192,5 @@ public class Zones_list_Controller {
 		}
 		return cordinators;
 	}
+	
 }

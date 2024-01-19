@@ -29,7 +29,6 @@ import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.utils.SSUserUtil;
 import co.deepmindz.adminorghierservice.utils.Templates.USERSTATUS;
 import co.deepmindz.adminorghierservice.utils.Zones_list_util;
-import jakarta.validation.Valid;
 
 @Service
 public class SSUserServiceImpl implements SSUserService {
@@ -225,5 +224,10 @@ public class SSUserServiceImpl implements SSUserService {
 	public boolean appointAsTeamLeads(List<String> user_id) {
 		ssUserRepository.appointAsTeamLead(user_id);
 		return true;
+	}
+
+	@Override
+	public List<String> getPhoneNumberOfSSUserId(String ssuserid) {
+		return ssUserRepository.getPhoneNumberOfSSUserId(ssuserid);
 	}
 }

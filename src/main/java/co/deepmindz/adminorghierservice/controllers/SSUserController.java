@@ -33,7 +33,6 @@ import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
 import co.deepmindz.adminorghierservice.exception.ResourceAlreadyExist;
 import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
-import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.SSUserService;
@@ -309,5 +308,12 @@ public class SSUserController {
 		if (status)
 			return CustomHttpResponse.responseBuilder("Team Lead appointed sucessfully", HttpStatus.OK, status);
 		return CustomHttpResponse.responseBuilder("Team Lead appoint failed", HttpStatus.OK, status);
+	}
+
+	@GetMapping("/get-phonenumber-of-ssuserid/{ssuserid}")
+	public Object getPhoneNumberOfSSUserId(@PathVariable String ssuserid) {
+		List<String> phonenumber = ssUserService.getPhoneNumberOfSSUserId(ssuserid);
+		return CustomHttpResponse.responseBuilder("phonenumber  ", HttpStatus.OK, phonenumber);
+
 	}
 }

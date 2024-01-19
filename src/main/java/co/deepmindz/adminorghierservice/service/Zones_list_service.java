@@ -32,4 +32,5 @@ public interface Zones_list_service {
 
 	List<Zones_list> getCordinatorByLinkedZoneId(List<String> list);
 
+
 }
