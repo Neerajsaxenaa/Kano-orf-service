@@ -36,5 +36,5 @@ public interface SSUserRepository extends JpaRepository<SSUser, String> {
 	public void appointAsTeamLead(@Param("userId") List<String> userId);
 
 	@Query("select phoneNumber from SSUser where user_id = :ssuserid")
-	public List<String> getPhoneNumberOfSSUserId(String ssuserid);
+	public String getPhoneNumberOfSSUserId(String ssuserid);
 }

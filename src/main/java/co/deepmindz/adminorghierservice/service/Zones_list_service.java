@@ -32,5 +32,7 @@ public interface Zones_list_service {
 
 	List<String> getCordinatorByLinkedZoneId(String zoneId);
 
+	List<String> getFeedbackToByPhc(String zoneId);
+
 
 }

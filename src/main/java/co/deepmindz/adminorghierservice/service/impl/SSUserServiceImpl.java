@@ -222,7 +222,7 @@ public class SSUserServiceImpl implements SSUserService {
 	}
 
 	@Override
-	public List<String> getPhoneNumberOfSSUserId(String ssuserid) {
+	public String getPhoneNumberOfSSUserId(String ssuserid) {
 		return ssUserRepository.getPhoneNumberOfSSUserId(ssuserid);
 	}
 	public String blockAndUnblockUser(String id) {

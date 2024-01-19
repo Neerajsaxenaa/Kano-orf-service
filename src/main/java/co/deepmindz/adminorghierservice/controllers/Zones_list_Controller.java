@@ -189,4 +189,9 @@ public class Zones_list_Controller {
 	
 	}
 	
+	@GetMapping("/get-feedbackto-by-phc-for-restcall/{zoneId}")
+	public List<String> getFeedbackToByPhc(@PathVariable String zoneId) {
+		return zones_list_service.getFeedbackToByPhc(zoneId);
+	
+	}	
 }

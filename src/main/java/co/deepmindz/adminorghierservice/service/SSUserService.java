@@ -43,7 +43,7 @@ public interface SSUserService {
 
 	public boolean appointAsTeamLeads(List<String> user_id);
 
-	List<String> getPhoneNumberOfSSUserId(String ssuserid);
+	String getPhoneNumberOfSSUserId(String ssuserid);
 
 	public String blockAndUnblockUser(String id);
 

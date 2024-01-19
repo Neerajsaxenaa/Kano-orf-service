@@ -267,9 +267,8 @@ public class SSUserController {
 	}
 
 	@GetMapping("/get-phonenumber-of-ssuserid/{ssuserid}")
-	public Object getPhoneNumberOfSSUserId(@PathVariable String ssuserid) {
-		List<String> phonenumber = ssUserService.getPhoneNumberOfSSUserId(ssuserid);
-		return CustomHttpResponse.responseBuilder("phonenumber  ", HttpStatus.OK, phonenumber);
+	public String getPhoneNumberOfSSUserId(@PathVariable String ssuserid) {
+		return ssUserService.getPhoneNumberOfSSUserId(ssuserid);
 	}
 
 	@PostMapping("/block-unblock-ssuser/{id}")
