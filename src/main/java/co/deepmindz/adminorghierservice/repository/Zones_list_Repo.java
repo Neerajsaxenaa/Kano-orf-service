@@ -1,14 +1,13 @@
 package co.deepmindz.adminorghierservice.repository;
 
 import java.util.List;
-import java.util.Optional;
 
-import co.deepmindz.adminorghierservice.dto.ParentZoneDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
+import co.deepmindz.adminorghierservice.dto.ParentZoneDTO;
 import co.deepmindz.adminorghierservice.models.Zones_list;
 
 @Component

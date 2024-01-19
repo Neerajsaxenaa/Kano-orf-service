@@ -68,50 +68,6 @@ public class SSUserController {
 	private static ParameterizedTypeReference<Map<String, String>> responseType = new ParameterizedTypeReference<>() {
 	};
 
-//	@GetMapping("/all-roles")
-//	public ResponseEntity<Object> getAllRoles() {
-//		logger.info("ListSSUser.class:getAllRoles():all-roles");
-//		List<RolesResponseDto> allRoles = rolesService.getAllRoles();
-//		if (loginmode == null) {
-//			RequestEntity<Void> request = RequestEntity.get(services[0] + "/loginmode/current-loginMode-status")
-//					.accept(MediaType.APPLICATION_JSON).build();
-//			loginmode = restTemplate.exchange(request, responseType).getBody();
-//		}
-//		Map<String, Object> response = new HashMap<>();
-//		response.put("allRoles", allRoles);
-//		response.put("loginmode", loginmode);
-//		logger.info("ListSSUser.class:getAllRoles():all-roles", response);
-//		return CustomHttpResponse.responseBuilder("All Roles", HttpStatus.OK, response);
-//	}
-
-//	@PostMapping("/get-all-zones")
-//	public ResponseEntity<Object> getZonesDetails(@RequestBody ListSSUserZonesRequestDto parentid_role) {
-//		logger.info("ListSSUser.class:getZoneDetails():get-all-zones", parentid_role);
-//		return CustomHttpResponse.responseBuilder("Zones for " + parentid_role.getRole(), HttpStatus.OK,
-//				ssUserService.getAllZoneForSSUser(parentid_role.getRole(), List.of(parentid_role.getParent_id())));
-//	}
-
-//	@PostMapping("/get-all-subzones")
-//	public ResponseEntity<Object> getSubZonesDetails(@RequestBody ListSSUserSubZonesRequestDto subZoneTypeDetails) {
-//		logger.info("ListSSUser.class:getSubZonesDetails():get-all-subzones", subZoneTypeDetails);
-//		List<ZonesResponseDto> allZones = zoneService.getZonesHierarchy();
-//		Map<String, String> zonesHierarchyMap = new HashMap<>();
-//
-//		for (int i = 0; i < allZones.size() - 1; i++) {
-//			zonesHierarchyMap.put(allZones.get(i).getName(), allZones.get(i + 1).getName());
-//		}
-//		if (ssUserService.getZonesCountUsingLinkedZones(subZoneTypeDetails.getZone_id()) <= 0) {
-//			logger.error("ListSSUser.class:getSubZonesDetails():get-all-subzones", "ResourceNotFoundException");
-//			throw new ResourceNotFoundException("zone_list", "any ID", "");
-//		}
-//		ListSSUserSubZonesResponseDto subZoneData = new ListSSUserSubZonesResponseDto();
-//		subZoneData.setItems(ssUserService.getSubZonesLevelDetails(subZoneTypeDetails));
-//		subZoneData.setSub_zone(zonesHierarchyMap.get(subZoneTypeDetails.getType()));
-//		logger.info("ListSSUser.class:getSubZonesDetails():get-all-subzones", subZoneData);
-//		return CustomHttpResponse.responseBuilder("items for " + subZoneTypeDetails.getType(), HttpStatus.OK,
-//				subZoneData);
-//	}
-
 	@PostMapping("/add-ssuser")
 	public ResponseEntity<Object> createSSUSer(@Valid @RequestBody SSUserRequestDto createSSUserData)
 			throws OperationNotSupportedException {
@@ -314,6 +270,12 @@ public class SSUserController {
 	public Object getPhoneNumberOfSSUserId(@PathVariable String ssuserid) {
 		List<String> phonenumber = ssUserService.getPhoneNumberOfSSUserId(ssuserid);
 		return CustomHttpResponse.responseBuilder("phonenumber  ", HttpStatus.OK, phonenumber);
+	}
+
+	@PostMapping("/block-unblock-ssuser/{id}")
+	public ResponseEntity<Object> blockAndUnblockUser(@PathVariable String id){
+		String response = ssUserService.blockAndUnblockUser(id);
+		return CustomHttpResponse.responseBuilder(response, HttpStatus.OK, id);
 
 	}
 }

@@ -18,6 +18,7 @@ import co.deepmindz.adminorghierservice.dto.SSResponseDtoForRestCall;
 import co.deepmindz.adminorghierservice.dto.SSUserRequestDto;
 import co.deepmindz.adminorghierservice.dto.SSUserResponseDto;
 import co.deepmindz.adminorghierservice.dto.SSUserUpdateRequestDto;
+import co.deepmindz.adminorghierservice.exception.ResourceNotFoundException;
 import co.deepmindz.adminorghierservice.models.Roles;
 import co.deepmindz.adminorghierservice.models.SSUser;
 import co.deepmindz.adminorghierservice.models.Zones_list;
@@ -77,12 +78,6 @@ public class SSUserServiceImpl implements SSUserService {
 				createdUser.getPhoneNumber(), createdUser.getLinkedParentZones(), createdUser.getLinkedSupervisors(),
 				createdUser.getCreated_at());
 	}
-
-//	public List<Zones_list_ResponseDto> getSubZonesLevelDetails(ListSSUserSubZonesRequestDto dto) {
-//		List<Zones_list> zones = zones_list_Repo.getZonesUsingLinkedZonesUsingInClause(List.of(dto.getZone_id()));
-//
-//		return zones_list_util.mapEntityToResponseDto(zones);
-//	}
 
 	public List<SSUserResponseDto> getSubordinateRoleSSUsers(String roleID) {
 		List<SSUser> subUsers = ssUserRepository.findByLinkedSupervisors(new String[] { roleID });
@@ -229,5 +224,19 @@ public class SSUserServiceImpl implements SSUserService {
 	@Override
 	public List<String> getPhoneNumberOfSSUserId(String ssuserid) {
 		return ssUserRepository.getPhoneNumberOfSSUserId(ssuserid);
+	}
+	public String blockAndUnblockUser(String id) {
+		SSUser user = ssUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("SSUSER", id, id));
+		String message = "";
+		if (user.isActive())
+			user.setActive(false);
+		else
+			user.setActive(true);
+		SSUser savedUser = ssUserRepository.save(user);
+		message = "user updated sucessfully";
+		if (savedUser == null)
+			message = "something went wrong";
+		return message;
+
 	}
 }
