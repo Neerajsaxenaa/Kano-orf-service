@@ -30,10 +30,13 @@ public class SSUserRequestDto {
 //	private String name;
 
 	private String password;
+	
 
 	@NotEmpty
 	@NotNull
 	private ZoneForSSUSer[] linked_zones;
+	
+	private boolean active;
 
 	private SupervisorOfSSUSer[] linked_supervisors;
 

@@ -75,7 +75,7 @@ public class SSUserServiceImpl implements SSUserService {
 		SSUser createdUser = ssUserRepository.save(user);
 
 		return new SSUserResponseDto(createdUser.getUser_id(), createdUser.getRole_id(), createdUser.getUsername(),
-				createdUser.getPhoneNumber(), createdUser.getLinkedParentZones(), createdUser.getLinkedSupervisors(),
+				createdUser.getPhoneNumber(), createdUser.getLinkedParentZones(),   createdUser.isActive(), createdUser.getLinkedSupervisors(),
 				createdUser.getCreated_at());
 	}
 
