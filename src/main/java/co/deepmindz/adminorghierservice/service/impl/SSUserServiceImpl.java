@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -75,8 +76,8 @@ public class SSUserServiceImpl implements SSUserService {
 		SSUser createdUser = ssUserRepository.save(user);
 
 		return new SSUserResponseDto(createdUser.getUser_id(), createdUser.getRole_id(), createdUser.getUsername(),
-				createdUser.getPhoneNumber(), createdUser.getLinkedParentZones(),   createdUser.isActive(), createdUser.getLinkedSupervisors(),
-				createdUser.getCreated_at());
+				createdUser.getPhoneNumber(), createdUser.getLinkedParentZones(), createdUser.isActive(),
+				createdUser.getLinkedSupervisors(), createdUser.getCreated_at());
 	}
 
 	public List<SSUserResponseDto> getSubordinateRoleSSUsers(String roleID) {
@@ -126,9 +127,8 @@ public class SSUserServiceImpl implements SSUserService {
 
 	public List<SSUserResponseDto> getAllSSUsers(String userIDorUsername, boolean isfindByUsername) {
 		List<SSUser> allUsers = new ArrayList<>();
-		allUsers = ssUserRepository.findByUserIdSorted(userIDorUsername);
 		if (userIDorUsername == null)
-			allUsers = ssUserRepository.findAll();
+			allUsers = ssUserRepository.findAll(Sort.by(Sort.Direction.ASC, "username"));
 		else if (isfindByUsername) {
 			SSUser user = ssUserRepository.findByUsername(userIDorUsername);
 			if (user != null)
@@ -226,6 +226,7 @@ public class SSUserServiceImpl implements SSUserService {
 	public String getPhoneNumberOfSSUserId(String ssuserid) {
 		return ssUserRepository.getPhoneNumberOfSSUserId(ssuserid);
 	}
+
 	public String blockAndUnblockUser(String id) {
 		SSUser user = ssUserRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("SSUSER", id, id));
 		String message = "";
