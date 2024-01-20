@@ -188,7 +188,8 @@ public class Zones_list_Controller {
 	}
 
 	@PostMapping("/update-totalvisits-of-allzones")
-	public void updateTotalVisitsOfAllZoneList(@RequestParam List<String> zoneids) {
+	public ResponseEntity<Object> updateTotalVisitsOfAllZoneList(@RequestParam List<String> zoneids) {
 		zones_list_service.updateTotalVisitofAllZones(zoneids);
+		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, zoneids);
 	}
 }
