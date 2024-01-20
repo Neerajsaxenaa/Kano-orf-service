@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +30,6 @@ import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.ZoneService;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes;
-import co.deepmindz.adminorghierservice.utils.Templates;
 import jakarta.validation.Valid;
 
 /*
@@ -51,23 +47,13 @@ public class RolesController {
 	@Autowired
 	RolesService rolesService;
 
-	private static Map<String, String> loginmode = null;
-
 	private Logger logger = LoggerFactory.getLogger(RolesController.class);
-
-	private static final String[] services = { "http://admin-main-service" };
-
-	private static ParameterizedTypeReference<Map<String, String>> responseType = new ParameterizedTypeReference<>() {
-	};
-	
 
 	@Autowired
 	RestTemplate restTemplate;
-	
-	
+
 	@Value("${state_limit}")
 	private String state_limit;
-	
 
 	@PostMapping("/role")
 	public ResponseEntity<Object> createRole(@Valid @RequestBody RolesRequestDto managerDto) {
@@ -85,21 +71,21 @@ public class RolesController {
 		}
 		return CustomHttpResponse.responseBuilder("Role with : " + roleID, HttpStatus.OK, responseDto.get(0));
 	}
-	
-		@GetMapping("/role-by-id-forRestCall/{roleID}")
-		public Object getRoleDetailsForRestCall(@PathVariable String roleID) {
-			logger.info("RolesController.class:getRoleDetailsForRestCall()", roleID);
-			 List<RolesResponseDto> roleObj = rolesService.getRoleDetails(roleID);
-			 Map<String, String> customRoleObjMap = new LinkedHashMap<>();
-			 if (roleObj.isEmpty()) {
-				return roleObj;
-			}
-			 for(RolesResponseDto role : roleObj) {
-				 customRoleObjMap.put("role_id" , role.getRole_id());
-				 customRoleObjMap.put("role", role.getTitle());
-			 }
-			 return customRoleObjMap;
+
+	@GetMapping("/role-by-id-forRestCall/{roleID}")
+	public Object getRoleDetailsForRestCall(@PathVariable String roleID) {
+		logger.info("RolesController.class:getRoleDetailsForRestCall()", roleID);
+		List<RolesResponseDto> roleObj = rolesService.getRoleDetails(roleID);
+		Map<String, String> customRoleObjMap = new LinkedHashMap<>();
+		if (roleObj.isEmpty()) {
+			return roleObj;
 		}
+		for (RolesResponseDto role : roleObj) {
+			customRoleObjMap.put("role_id", role.getRole_id());
+			customRoleObjMap.put("role", role.getTitle());
+		}
+		return customRoleObjMap;
+	}
 
 	@GetMapping("/role/get-all-roles")
 	public ResponseEntity<Object> getAllManagers() {
@@ -129,14 +115,7 @@ public class RolesController {
 		}
 		HashMap<String, RolesResponseDto> idWithRolesMap = new HashMap<>();
 		HashMap<String, RolesResponseDto> idWithManagerObjectMap = new HashMap<>();
-//		List<CustomDataTypes.relation> organizationRelation = new LinkArrayList<>();
 		List<CustomDataTypes.relation> organizationRelation = new LinkedList<>();
-		if (loginmode == null) {
-			RequestEntity<Void> request = RequestEntity
-					.get(services[0] + "/admin-main/login-mode/current-loginMode-status")
-					.accept(MediaType.APPLICATION_JSON).build();
-			loginmode = restTemplate.exchange(request, responseType).getBody();
-		}
 
 		for (RolesResponseDto manager : allmanagers) {
 			idWithManagerObjectMap.put(manager.getRole_id(), manager);
