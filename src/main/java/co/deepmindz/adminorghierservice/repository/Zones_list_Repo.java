@@ -3,12 +3,14 @@ package co.deepmindz.adminorghierservice.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
 import co.deepmindz.adminorghierservice.dto.ParentZoneDTO;
 import co.deepmindz.adminorghierservice.models.Zones_list;
+import jakarta.transaction.Transactional;
 
 @Component
 public interface Zones_list_Repo extends JpaRepository<Zones_list, String> {
@@ -35,4 +37,9 @@ public interface Zones_list_Repo extends JpaRepository<Zones_list, String> {
 
 	@Query(value = "select z from Zones_list z where z.linked_zone_list = :linked_zone")
 	public List<Zones_list> getAllParentListData(String linked_zone);
+
+	@Transactional
+	@Modifying
+	@Query(value = "Update Zones_list set totalvisits = totalvisits + 1 where _id IN :zoneids", nativeQuery = true)
+	public void updateTotalVisitforAllZones(@Param("zoneids") List<String> zoneids);
 }

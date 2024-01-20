@@ -1,7 +1,6 @@
 package co.deepmindz.adminorghierservice.controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,6 @@ import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
-import co.deepmindz.adminorghierservice.utils.CustomDataTypes.LinkedZoneIds;
 import jakarta.validation.Valid;
 
 @RestController
@@ -178,7 +176,7 @@ public class Zones_list_Controller {
 //		}
 //		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
 //	}
-	
+
 	@PostMapping("/get-cordinatorsby-linked-zoneId-for-restcall")
 	public List<String> getCordinatorByLinkedZoneId(@RequestBody List<String> zoneId) {
 		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId);
@@ -187,5 +185,10 @@ public class Zones_list_Controller {
 			cordinators.add(zones_list.getCordinator());
 		}
 		return cordinators;
+	}
+
+	@PostMapping("/update-totalvisits-of-allzones")
+	public void updateTotalVisitsOfAllZoneList(@RequestParam List<String> zoneids) {
+		zones_list_service.updateTotalVisitofAllZones(zoneids);
 	}
 }

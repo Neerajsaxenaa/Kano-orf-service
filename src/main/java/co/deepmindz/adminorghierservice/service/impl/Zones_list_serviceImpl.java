@@ -195,8 +195,12 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 
 	@Override
 	public List<Zones_list> getCordinatorByLinkedZoneId(List<String> zoneId) {
-		 List<Zones_list> findAllById = zones_list_Repo.findAllById(zoneId);
-		 return findAllById;
+		List<Zones_list> findAllById = zones_list_Repo.findAllById(zoneId);
+		return findAllById;
 	}
 
+	@Override
+	public void updateTotalVisitofAllZones(List<String> ids) {
+		zones_list_Repo.updateTotalVisitforAllZones(ids);
+	}
 }
