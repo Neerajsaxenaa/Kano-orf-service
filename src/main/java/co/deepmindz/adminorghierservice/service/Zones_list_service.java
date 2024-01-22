@@ -9,7 +9,6 @@ import co.deepmindz.adminorghierservice.dto.CreateZoneListDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_with_parentZone_response;
-import co.deepmindz.adminorghierservice.models.Zones_list;
 
 @Service
 public interface Zones_list_service {
@@ -32,7 +31,7 @@ public interface Zones_list_service {
 
 	List<String> getCordinatorByLinkedZoneId(String zoneId);
 
-	List<String> getFeedbackToByPhc(String zoneId);
+	String getFeedbackToByPhc(String zoneId);
 
 
 }

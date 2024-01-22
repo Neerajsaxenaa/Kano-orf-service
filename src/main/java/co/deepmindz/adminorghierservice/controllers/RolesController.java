@@ -33,8 +33,6 @@ import co.deepmindz.adminorghierservice.resources.CustomHttpResponse;
 import co.deepmindz.adminorghierservice.service.RolesService;
 import co.deepmindz.adminorghierservice.service.ZoneService;
 import co.deepmindz.adminorghierservice.utils.CustomDataTypes;
-import co.deepmindz.adminorghierservice.utils.Templates;
-import io.swagger.v3.oas.models.PathItem.HttpMethod;
 import jakarta.validation.Valid;
 
 /*

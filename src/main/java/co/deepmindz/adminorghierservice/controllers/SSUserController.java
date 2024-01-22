@@ -226,16 +226,16 @@ public class SSUserController {
 		}
 	}
 
-	@GetMapping("/get-all-configuration")
+	@GetMapping("/get-all-freeze-configuration")
 	public Object getAllConfiguration() {
 		logger.info("SSUserController.class:getAllConfiguration: get-all-configuration");
 		try {
 			String getAllFreezeConfigurationApi = Templates.ALLSERVICES.admin_main.toString()
-					+ "/admin-main/config-management/get-all-configuration";
+					+ "/admin-main/config-management/get-all-freeze-configuration";
 			return restTemplate.getForObject(getAllFreezeConfigurationApi, Object.class);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return CustomHttpResponse.responseBuilder("getAllFreezeConfigurationApi  is not working..!!",
+			return CustomHttpResponse.responseBuilder("getAllFreezeConfiguration Api  is not working..!!",
 					HttpStatus.NOT_FOUND, null);
 		}
 	}

@@ -1,7 +1,5 @@
 package co.deepmindz.adminorghierservice.controllers;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
@@ -26,12 +23,10 @@ import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
-import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
-import co.deepmindz.adminorghierservice.utils.CustomDataTypes.LinkedZoneIds;
 import jakarta.validation.Valid;
 
 @RestController
@@ -190,7 +185,7 @@ public class Zones_list_Controller {
 	}
 	
 	@GetMapping("/get-feedbackto-by-phc-for-restcall/{zoneId}")
-	public List<String> getFeedbackToByPhc(@PathVariable String zoneId) {
+	public Object getFeedbackToByPhc(@PathVariable String zoneId) {
 		return zones_list_service.getFeedbackToByPhc(zoneId);
 	
 	}	

@@ -199,11 +199,11 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 	}
 
 	@Override
-	public List<String> getFeedbackToByPhc(String zoneId) {
-		List<String> feedbackTo = new ArrayList<>();
-  		 String feedbackToByPhc = zones_list_Repo.getFeedbackToByPhc(zones_list_Repo.getParentZone(zoneId));
-  		 feedbackTo.add(feedbackToByPhc);
-  		 return feedbackTo;
+	public String getFeedbackToByPhc(String zoneId) {
+//		List<String> feedbackTo = new ArrayList<>();
+  		 return zones_list_Repo.getFeedbackToByPhc(zones_list_Repo.getParentZone(zoneId));
+//  		 feedbackTo.add(feedbackToByPhc);
+//  		 return feedbackTo;
 	}
 
 }
