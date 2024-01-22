@@ -14,9 +14,6 @@ import jakarta.transaction.Transactional;
 
 @Component
 public interface SSUserRepository extends JpaRepository<SSUser, String> {
-	
-	@Query("SELECT u FROM SSUser u WHERE u.user_id = :userId ORDER BY u.user_id")
-     List<SSUser> findByUserIdSorted(String userId);
 
 	public SSUser findByUsername(@Param("username") String username);
 

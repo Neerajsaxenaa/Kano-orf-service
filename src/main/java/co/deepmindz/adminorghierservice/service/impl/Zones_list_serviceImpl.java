@@ -194,16 +194,20 @@ public class Zones_list_serviceImpl implements Zones_list_service {
 	}
 
 	@Override
-	public List<String> getCordinatorByLinkedZoneId(String zoneId) {
-		return zones_list_Repo.getCordinatorByLinkedZoneId(zoneId);
+	public List<Zones_list> getCordinatorByLinkedZoneId(List<String> zoneId) {
+		List<Zones_list> findAllById = zones_list_Repo.findAllById(zoneId);
+		return findAllById;
 	}
 
 	@Override
+
 	public String getFeedbackToByPhc(String zoneId) {
-//		List<String> feedbackTo = new ArrayList<>();
+
   		 return zones_list_Repo.getFeedbackToByPhc(zones_list_Repo.getParentZone(zoneId));
-//  		 feedbackTo.add(feedbackToByPhc);
-//  		 return feedbackTo;
 	}
 
+	@Override
+	public void updateTotalVisitofAllZones(List<String> ids) {
+		zones_list_Repo.updateTotalVisitforAllZones(ids);
+	}
 }

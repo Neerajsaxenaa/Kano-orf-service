@@ -1,5 +1,7 @@
 package co.deepmindz.adminorghierservice.controllers;
 
+import java.util.ArrayList;
+//github.com/SS-Whitelabel/ss-admin-org-hierarchy-service.git
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.deepmindz.adminorghierservice.dto.AllZonesByRelationshipIdDTO;
@@ -23,6 +26,7 @@ import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationDTO;
 import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
+import co.deepmindz.adminorghierservice.models.Zones_list;
 import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
@@ -38,7 +42,7 @@ public class Zones_list_Controller {
 
 	@Autowired
 	private ZoneListService zoneListService;
-	
+
 	@Autowired
 	SSUserService ssUserService;
 
@@ -168,25 +172,25 @@ public class Zones_list_Controller {
 	/*
 	 * get cordinator by given phc ids
 	 */
-//	@PostMapping("/get-cordinatorsby-linked-zoneId")
-//	public ResponseEntity<Object> getCordinatorByLinkedZoneId(@RequestBody LinkedZoneIds zoneId) {
-//		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId.getLinkedZoneid());
-//		List<String> cordinators = new ArrayList<>();
-//		for (Zones_list zones_list : allCordinators) {
-//			cordinators.add(zones_list.getCordinator());
-//		}
-//		return CustomHttpResponse.responseBuilder("Cordinators ids", HttpStatus.OK, cordinators);
-//	}
-	
-	@GetMapping("/get-cordinatorsby-linked-zoneId-for-restcall/{zoneId}")
-	public Object getCordinatorByLinkedZoneId(@PathVariable String zoneId) {
-		return zones_list_service.getCordinatorByLinkedZoneId(zoneId);
-	
+	@PostMapping("/get-cordinatorsby-linked-zoneId-for-restcall")
+	public List<String> getCordinatorByLinkedZoneId(@RequestBody List<String> zoneId) {
+		List<Zones_list> allCordinators = zones_list_service.getCordinatorByLinkedZoneId(zoneId);
+		List<String> cordinators = new ArrayList<>();
+		for (Zones_list zones_list : allCordinators) {
+			cordinators.add(zones_list.getCordinator());
+		}
+		return cordinators;
 	}
-	
+
+	@PostMapping("/update-totalvisits-of-allzones")
+	public ResponseEntity<Object> updateTotalVisitsOfAllZoneList(@RequestParam List<String> zoneids) {
+		zones_list_service.updateTotalVisitofAllZones(zoneids);
+		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, zoneids);
+	}
+
 	@GetMapping("/get-feedbackto-by-phc-for-restcall/{zoneId}")
 	public Object getFeedbackToByPhc(@PathVariable String zoneId) {
 		return zones_list_service.getFeedbackToByPhc(zoneId);
-	
-	}	
+
+	}
 }
