@@ -43,5 +43,8 @@ public interface SSUserService {
 
 	public boolean appointAsTeamLeads(List<String> user_id);
 
+	String getPhoneNumberOfSSUserId(String ssuserid);
+
 	public String blockAndUnblockUser(String id);
+
 }

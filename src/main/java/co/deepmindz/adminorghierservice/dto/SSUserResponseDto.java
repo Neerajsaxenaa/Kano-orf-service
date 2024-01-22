@@ -26,6 +26,8 @@ public class SSUserResponseDto {
 //	private String password;
 
 	private String[] linked_zones;
+	
+	private boolean active;
 
 	private String[] linked_supervisors;
 

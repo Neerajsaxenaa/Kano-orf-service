@@ -38,8 +38,20 @@ public interface Zones_list_Repo extends JpaRepository<Zones_list, String> {
 	@Query(value = "select z from Zones_list z where z.linked_zone_list = :linked_zone")
 	public List<Zones_list> getAllParentListData(String linked_zone);
 
+<<<<<<< HEAD
 	@Transactional
 	@Modifying
 	@Query(value = "Update Zones_list set totalvisits = totalvisits + 1 where _id IN :zoneids", nativeQuery = true)
 	public void updateTotalVisitforAllZones(@Param("zoneids") List<String> zoneids);
+=======
+	@Query("select cordinator from Zones_list z where z.id = :zoneId")
+	public List<String> getCordinatorByLinkedZoneId(String zoneId);
+
+	@Query("select cordinator from Zones_list z where z.id = :zoneId")
+	public String getFeedbackToByPhc(String zoneId);
+
+	@Query("select linked_zone_list from Zones_list z where z.id = :zoneId")
+	public String getParentZone(String zoneId);
+
+>>>>>>> 6ef65085a2bab774de4107963d94f3b88fb63cff
 }

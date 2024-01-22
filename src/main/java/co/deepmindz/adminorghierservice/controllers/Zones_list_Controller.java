@@ -26,6 +26,7 @@ import co.deepmindz.adminorghierservice.dto.ZoneListFiltrationResponseDTO;
 import co.deepmindz.adminorghierservice.dto.Zones_list_RequestDto;
 import co.deepmindz.adminorghierservice.dto.Zones_list_ResponseDto;
 import co.deepmindz.adminorghierservice.models.Zones_list;
+import co.deepmindz.adminorghierservice.service.SSUserService;
 import co.deepmindz.adminorghierservice.service.ZoneListService;
 import co.deepmindz.adminorghierservice.service.Zones_list_service;
 import co.deepmindz.adminorghierservice.utils.AvailableZone;
@@ -40,6 +41,9 @@ public class Zones_list_Controller {
 
 	@Autowired
 	private ZoneListService zoneListService;
+
+	@Autowired
+	SSUserService ssUserService;
 
 	@GetMapping("/get-all-zones")
 	public ResponseEntity<Object> getAllZonesList() {
@@ -157,7 +161,7 @@ public class Zones_list_Controller {
 		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, parentZoneList.get(0));
 	}
 
-	@GetMapping("/get-all-zonelist")
+	@PostMapping("/get-all-zonelist")
 	public List<Zones_list_ResponseDto> getAllZonesListForOtherServices(@RequestBody String[] zoneIds) {
 		List<Zones_list_ResponseDto> zones_list_ResponseDtos = zones_list_service.getAllZonesList(zoneIds);
 		return zones_list_ResponseDtos;
@@ -191,5 +195,11 @@ public class Zones_list_Controller {
 	public ResponseEntity<Object> updateTotalVisitsOfAllZoneList(@RequestParam List<String> zoneids) {
 		zones_list_service.updateTotalVisitofAllZones(zoneids);
 		return CustomHttpResponse.responseBuilder("Parent Zone Id", HttpStatus.OK, zoneids);
+	}
+
+	@GetMapping("/get-feedbackto-by-phc-for-restcall/{zoneId}")
+	public List<String> getFeedbackToByPhc(@PathVariable String zoneId) {
+		return zones_list_service.getFeedbackToByPhc(zoneId);
+
 	}
 }

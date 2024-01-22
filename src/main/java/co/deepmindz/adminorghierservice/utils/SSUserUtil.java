@@ -87,7 +87,7 @@ public class SSUserUtil {
 
 		return new SSUserResponseDto(user.getUser_id(), idWithRoleNameMap.get(user.getRole_id()), user.getUsername(),
 				user.getPhoneNumber(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
-				supervisorslist.toArray(new String[supervisorslist.size()]), user.getCreated_at());
+				user.isActive(), supervisorslist.toArray(new String[supervisorslist.size()]), user.getCreated_at());
 	}
 
 	public MemberResponseDto mapEntityToMemberResponseDto(SSUser user) {
@@ -136,7 +136,7 @@ public class SSUserUtil {
 
 		return new SSUserResponseDto(user.getUser_id(), idWithRoleNameMap.get(user.getRole_id()), user.getUsername(),
 				user.getPhoneNumber(), allLinkedZoneNames.toArray(new String[allLinkedZoneNames.size()]),
-				supervisors.toArray(new String[supervisors.size()]), user.getCreated_at());
+				user.isActive(), supervisors.toArray(new String[supervisors.size()]), user.getCreated_at());
 	}
 
 

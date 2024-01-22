@@ -265,9 +265,16 @@ public class SSUserController {
 			return CustomHttpResponse.responseBuilder("Team Lead appointed sucessfully", HttpStatus.OK, status);
 		return CustomHttpResponse.responseBuilder("Team Lead appoint failed", HttpStatus.OK, status);
 	}
+
+	@GetMapping("/get-phonenumber-of-ssuserid/{ssuserid}")
+	public String getPhoneNumberOfSSUserId(@PathVariable String ssuserid) {
+		return ssUserService.getPhoneNumberOfSSUserId(ssuserid);
+	}
+
 	@PostMapping("/block-unblock-ssuser/{id}")
 	public ResponseEntity<Object> blockAndUnblockUser(@PathVariable String id){
 		String response = ssUserService.blockAndUnblockUser(id);
 		return CustomHttpResponse.responseBuilder(response, HttpStatus.OK, id);
+
 	}
 }
